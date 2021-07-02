@@ -28,6 +28,13 @@ public class LoginActivity extends AppCompatActivity{
     EditText edittext_email,edittext_pass;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(LoginActivity.this,StartActivity.class));
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -40,13 +47,25 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                if(inputMethodManager.isAcceptingText()){
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                }
+                else{
+                }
             }
         });
         auth=FirebaseAuth.getInstance();
         Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Login");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,StartActivity.class));
+                finish();
+            }
+        });
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +85,6 @@ public class LoginActivity extends AppCompatActivity{
                 startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
             }
         });
-
     }
     public void login(String txt_email,String txt_pass){
         auth.signInWithEmailAndPassword(txt_email,txt_pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

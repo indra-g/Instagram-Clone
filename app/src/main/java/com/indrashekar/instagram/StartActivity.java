@@ -16,7 +16,7 @@ public class StartActivity extends AppCompatActivity {
     Button login_btn,signup_btn;
     FirebaseUser firebaseUser;
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         FirebaseApp.initializeApp(this);
@@ -25,7 +25,7 @@ public class StartActivity extends AppCompatActivity {
             startActivity(new Intent(StartActivity.this,MainActivity.class));
             finish();
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

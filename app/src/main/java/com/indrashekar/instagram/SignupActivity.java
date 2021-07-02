@@ -34,6 +34,13 @@ public class SignupActivity extends AppCompatActivity {
     DatabaseReference reference;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SignupActivity.this,StartActivity.class));
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
@@ -47,12 +54,24 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 InputMethodManager inputMethodManager=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                if(inputMethodManager.isAcceptingText()){
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                }
+                else{
+                }
             }
         });
         Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Signup");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignupActivity.this,StartActivity.class));
+                finish();
+            }
+        });
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +108,7 @@ public class SignupActivity extends AppCompatActivity {
                                             finish();
                                         }
                                         else{
-                                            Toast.makeText(SignupActivity.this, "You cann't have this email and password for registration", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignupActivity.this, "You can't have this email and password for registration", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });

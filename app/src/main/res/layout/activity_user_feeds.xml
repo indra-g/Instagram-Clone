@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".UserFeedsActivity">
+
     <include
         layout="@layout/bar_layout"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar"/>
 
-    <ListView
-        android:id="@+id/listview"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/recycleView" />
 </RelativeLayout>
