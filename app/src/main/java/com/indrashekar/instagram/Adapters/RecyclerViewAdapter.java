@@ -15,6 +15,10 @@ import com.indrashekar.instagram.R;
 
 import java.util.List;
 
+/**
+ * Created by AndroidJSon.com on 6/18/2017.
+ */
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     Context context;
@@ -40,6 +44,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
+
+        holder.imageNameTextView.setText(UploadInfo.getImageName());
+
+        //Loading image from Glide library.
         Glide.with(context).load(UploadInfo.getImageURL()).into(holder.imageView);
     }
 
@@ -58,6 +66,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
 
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+
+            imageNameTextView = (TextView) itemView.findViewById(R.id.ImageNameTextView);
         }
     }
 }

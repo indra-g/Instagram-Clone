@@ -76,7 +76,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String txt_email=edittext_email.getText().toString();
-                String txt_pass=edittext_email.getText().toString();
+                String txt_pass=edittext_pass.getText().toString();
                 String txt_username=editText_username.getText().toString();
                 if(TextUtils.isEmpty(txt_email)||TextUtils.isEmpty(txt_pass)){
                     Toast.makeText(SignupActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();

@@ -1,50 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PostingActivity">
+    android:layout_height="match_parent">
 
     <include
         layout="@layout/bar_layout"
-        android:id="@+id/toolbar"/>
+        android:id="@+id/toolbar"
+        tools:ignore="InvalidId"/>
 
-    <LinearLayout
-        android:id="@+id/layout_button"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:weightSum="2">
+        android:text="Post"
+        android:id="@+id/textview"
+        android:layout_below="@+id/toolbar"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"/>
 
-        <!--Button for choosing image from gallery-->
-        <Button
-            android:id="@+id/btnChoose"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/button_clr"
-            android:text="Choose" />
-
-        <!--Button for uploading image-->
-        <Button
-            android:id="@+id/btnUpload"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/button_clr"
-            android:text="Post" />
-    </LinearLayout>
-
-    <!--Image View for showing image choosen from gallery-->
     <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/layout_button"
-        android:padding="10dp" />
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:id="@+id/ShowImageView"
+        android:layout_below="@+id/textview"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ButtonChooseImage"
+        android:layout_below="@+id/ShowImageView"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/button_clr"
+        android:text="Choose Image"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ImageNameEditText"
+        android:layout_below="@+id/ButtonChooseImage"
+        android:layout_marginTop="20dp"
+        android:hint="Enter Caption"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ButtonUploadImage"
+        android:backgroundTint="@color/button_clr"
+        android:layout_below="@+id/ImageNameEditText"
+        android:layout_margin="20dp"
+        android:text="Post"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/button_clr"
+        android:id="@+id/DisplayImagesButton"
+        android:layout_below="@+id/ButtonUploadImage"
+        android:text="Show Instagram Feeds"/>
+
 </RelativeLayout>

@@ -3,17 +3,15 @@ package com.indrashekar.instagram;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,14 +19,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.indrashekar.instagram.Adapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listview;
-    DatabaseReference reference;
-    ArrayList<String>username;
-    ArrayList<String>id1;
+    // Creating DatabaseReference.
+    DatabaseReference databaseReference;
+
+    // Creating RecyclerView.
+    RecyclerView recyclerView;
+
+    // Creating RecyclerView.Adapter.
+    RecyclerView.Adapter adapter ;
+
+    // Creating Progress dialog
+    ProgressDialog progressDialog;
+
+    // Creating List of ImageUploadInfo class.
+    List<ImageUploadInfo> list = new ArrayList<>();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,StartActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 finish();
                 return true;
+            case R.id.users:
+                startActivity(new Intent(MainActivity.this,UserslistActivity.class));
+                finish();
         }
         return false;
     }
@@ -59,40 +72,57 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Instagram User's");
-        listview=(ListView)findViewById(R.id.listview);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        getSupportActionBar().setTitle("Instagram Feed's");
+        // Assign id to RecyclerView.
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        // Setting RecyclerView size true.
+        recyclerView.setHasFixedSize(true);
+
+        // Setting RecyclerView layout as LinearLayout.
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        // Assign activity this to progress dialog.
+        progressDialog = new ProgressDialog(MainActivity.this);
+
+        // Setting up message in Progress dialog.
+        progressDialog.setMessage("Loading Images From Firebase.");
+
+        // Showing progress dialog.
+        progressDialog.show();
+
+        // Setting up Firebase image upload folder path in databaseReference.
+        // The path is already defined in MainActivity.
+        databaseReference = FirebaseDatabase.getInstance().getReference(PostingActivity.Database_Path);
+
+        // Adding Add Value Event Listener to databaseReference.
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(getApplicationContext(),UserFeedsActivity.class);
-                intent.putExtra("id",id1.get(position));
-                startActivity(intent);
-                finish();
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+
+                    list.add(imageUploadInfo);
+                }
+
+                adapter = new RecyclerViewAdapter(getApplicationContext(), list);
+
+                recyclerView.setAdapter(adapter);
+
+                // Hiding the progress dialog.
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                // Hiding the progress dialog.
+                progressDialog.dismiss();
+
             }
         });
-        username=new ArrayList<String>();
-        id1=new ArrayList<String>();
-        username.clear();
-        ArrayAdapter<String>arrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,username);
-        listview.setAdapter(arrayAdapter);
-        reference= FirebaseDatabase.getInstance().getReference();
-        DatabaseReference usersref=reference.child("Users");
-        ValueEventListener eventListener=new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot ds:snapshot.getChildren()){
-                    String name = ds.child("username").getValue(String.class);
-                    String id = ds.child("id").getValue(String.class);
-                    username.add(name);
-                    id1.add(id);
-                    arrayAdapter.notifyDataSetChanged();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
-                Toast.makeText(MainActivity.this, error.toException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        };
-        usersref.addListenerForSingleValueEvent(eventListener);
+
     }
 }
