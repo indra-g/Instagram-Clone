@@ -194,7 +194,7 @@ public class PostingActivity extends AppCompatActivity {
         if (FilePathUri != null) {
 
             // Setting progressDialog Title.
-            progressDialog.setTitle("Image is Uploading...");
+            progressDialog.setTitle("Posting...");
 
             // Showing progressDialog.
             progressDialog.show();
@@ -215,10 +215,10 @@ public class PostingActivity extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Posted Successfully ", Toast.LENGTH_LONG).show();
 
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, storageReference2nd.getDownloadUrl().toString());
 
                             // Getting image upload ID.
                             String ImageUploadId = databaseReference.push().getKey();
@@ -246,7 +246,7 @@ public class PostingActivity extends AppCompatActivity {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
                             // Setting progressDialog Title.
-                            progressDialog.setTitle("Image is Uploading...");
+                            progressDialog.setTitle("Posting...");
 
                         }
                     });
