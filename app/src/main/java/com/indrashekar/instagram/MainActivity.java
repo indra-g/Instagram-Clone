@@ -60,15 +60,16 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.users:
-                startActivity(new Intent(MainActivity.this,UserslistActivity.class));
+                startActivity(new Intent(MainActivity.this,UserListActivity.class));
                 finish();
+                return true;
             case R.id.refresh:
                 startActivity(new Intent(MainActivity.this,MainActivity.class));
                 finish();
+                return true;
         }
         return false;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
