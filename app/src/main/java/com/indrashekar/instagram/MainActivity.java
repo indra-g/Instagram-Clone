@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.users:
                 startActivity(new Intent(MainActivity.this,UserslistActivity.class));
                 finish();
+            case R.id.refresh:
+                startActivity(new Intent(MainActivity.this,MainActivity.class));
+                finish();
         }
         return false;
     }
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(MainActivity.this);
 
         // Setting up message in Progress dialog.
-        progressDialog.setMessage("Loading Images From Firebase.");
+        progressDialog.setMessage("Loading Feed's");
 
         // Showing progress dialog.
         progressDialog.show();

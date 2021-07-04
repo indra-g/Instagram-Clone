@@ -44,6 +44,7 @@ import java.util.UUID;
 
 public class PostingActivity extends AppCompatActivity {
 
+
     // Folder path for Firebase Storage.
     String Storage_Path = "All_Image_Uploads/";
 
@@ -216,15 +217,22 @@ public class PostingActivity extends AppCompatActivity {
 
                             // Showing toast message after done uploading.
                             Toast.makeText(getApplicationContext(), "Posted Successfully ", Toast.LENGTH_LONG).show();
+                            storageReference2nd.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    @SuppressWarnings("VisibleForTests")
+                                    ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, uri.toString());
+                                    // Getting image upload ID.
+                                    String ImageUploadId = databaseReference.push().getKey();
 
-                            @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempImageName, storageReference2nd.getDownloadUrl().toString());
-
-                            // Getting image upload ID.
-                            String ImageUploadId = databaseReference.push().getKey();
-
-                            // Adding image upload id s child element into databaseReference.
-                            databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                                    // Adding image upload id s child element into databaseReference.
+                                    databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
                         }
                     })
                     // If something goes wrong .
@@ -244,10 +252,9 @@ public class PostingActivity extends AppCompatActivity {
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Setting progressDialog Title.
+                            int num=(int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
                             progressDialog.setTitle("Posting...");
-
+                            progressDialog.setMessage("Uploaded "+(int)num+"%");
                         }
                     });
         }
